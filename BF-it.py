@@ -14,6 +14,7 @@ def process_args():
     parser.add_argument("--run", "-r", action="store_true", help="Run the Brainfuck file after compilation")
     parser.add_argument("--minify", "-m", action="store_true", help="Minifies the compiled code")
     parser.add_argument("--optimize", "-opt", action="store_true", help="syntax optimization")
+    parser.add_argument("--strip_unnecessary", "-u", action="store_true", help="Removes unneeded code at the beginning and end of the program. Warning: The pointer will no longer be left on the starting cell and generated code may not work a Brainfuck tape that doesnt loop.")
 
     args = parser.parse_args()
 
@@ -27,12 +28,13 @@ def process_args():
     run_file = args.run
     minify_file = args.minify
     optimize = args.optimize
+    strip_unnecessary = args.strip_unnecessary
 
-    return input_file, output_file, run_file, minify_file, optimize
+    return input_file, output_file, run_file, minify_file, optimize, strip_unnecessary
 
 
 def compile_file():
-    input_file, output_file, run_file, minify_bf_code, optimize_code = process_args()
+    input_file, output_file, run_file, minify_bf_code, optimize_code, strip_unnecessary_code = process_args()
     print("Compiling file '%s'..." % input_file)
 
     with open(input_file, "rb") as f:
@@ -43,6 +45,9 @@ def compile_file():
 
     if minify_bf_code:
         brainfuck_code = Minify.minify(brainfuck_code)
+
+    if strip_unnecessary_code:
+        brainfuck_code = Minify.strip_unnecessary(brainfuck_code)
 
     with open(output_file, "wt") as f:
         f.write(brainfuck_code)
