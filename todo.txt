@@ -1,0 +1,11 @@
+Todo:
+
+[ ] Add more cases to Minify.py
+
+[ ] Create tests
+
+[ ] Make ternary work
+
+[ ] Make `continue` work
+
+[ ] Make pointers work (may or may not be very difficult)
